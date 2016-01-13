@@ -5,6 +5,8 @@ import com.bo.*;
 
 
 public interface IStationDao {
+		public List<Station> getStations(Borders limite);
+		
 		public List<Station> getStations();
 		
 		public List<Carburant> getCarburants();
