@@ -243,6 +243,119 @@ public class StationDao implements IStationDao {
 
 	}
 
+	
+	public List<Station> getStations(Borders limite) {
+
+		ArrayList<Station> stations = new ArrayList<Station>();
+		Station station = null;
+		Adresse adresse = null;
+		ArrayList<Carburant> carburants = new ArrayList<Carburant>();
+		ArrayList<TypeService> services = null;
+		Time heureOuverture = null;
+		Time heureFermeture = null;
+		ArrayList<String> joursFermeture = null;
+		TypeRoute emplacement = null;
+		Carburant carbu = null;
+
+		
+		TypeService service = null;
+		
+	
+		double latMax = limite.getBorderNO().getCoordonnee().getLatitude();
+		double longMax = limite.getBorderSE().getCoordonnee().getLongitude();;
+		double latMin = limite.getBorderSE().getCoordonnee().getLatitude();
+		double longMin = limite.getBorderNO().getCoordonnee().getLongitude();
+
+		String requeteStation = "SELECT * FROM  ecopompe.stations WHERE (latitude BETWEEN " + latMin + " AND " + latMax + ") AND (longitude BETWEEN " + longMin + " AND " + longMax +")";
+		String requeteCarbu = "SELECT nom, prix FROM  ecopompe.carburants INNER JOIN vendre ON vendre.id_carburant = carburants.id_carburant WHERE vendre.id_station = ?";
+		String requeteServices = "SELECT types_services FROM  ecopompe.services INNER JOIN proposer ON proposer.id_service = services.id_service WHERE proposer.id_station = ?";
+
+		// String resultSetServices = "SELECT * FROM ecopompe. ";
+
+		ConnexionManager.GetInstance().open();
+		ResultSet resultSet = null;
+		ResultSet resultSetCarbu = null;
+		ResultSet resultSetServices = null;
+
+		try {
+
+			Statement stmt = (Statement) ConnexionManager.GetInstance().GetConnection().createStatement();
+			PreparedStatement stmtCarbu = (PreparedStatement) ConnexionManager.GetInstance().GetConnection()
+					.prepareStatement(requeteCarbu);
+			PreparedStatement stmtServices = (PreparedStatement) ConnexionManager.GetInstance().GetConnection()
+					.prepareStatement(requeteServices);
+
+			resultSet = stmt.executeQuery(requeteStation);
+
+			// resultSetServices = stmt.executeQuery(resultSetServices);
+			 PreparedStatement pstmt =null;
+			
+
+			while (resultSet.next()) {
+
+				// ADRESSE
+				adresse = new Adresse();
+				adresse.setRue(resultSet.getString("Adresse"));
+				adresse.setVille(resultSet.getString("Ville"));
+				adresse.setCodepostal(resultSet.getString("CP"));
+				Coordonnees coordonnee = new Coordonnees();
+				coordonnee.setLatitude(resultSet.getDouble("latitude"));
+				coordonnee.setLongitude(resultSet.getDouble("longitude"));
+				Point position = new Point();
+				position.setCoordonnee(coordonnee);
+				adresse.setPosition(position);
+
+				// Requete globale
+				
+				// CARBURANTS
+				carburants = new ArrayList<Carburant>();
+
+				stmtCarbu.setString(1, resultSet.getString("id_station")); 
+				resultSetCarbu = stmtCarbu.executeQuery();
+				if (!resultSetCarbu.wasNull()) {
+
+					while (resultSetCarbu.next()) {
+						carbu = new Carburant();
+						carbu.setNom(resultSetCarbu.getString("nom"));
+						carbu.setPrix(resultSetCarbu.getFloat("prix"));
+						carburants.add(carbu);
+					}
+				}
+
+				// SERVICES
+				services = new ArrayList<TypeService>();
+				stmtServices.setString(1, resultSet.getString("id_station")); 
+			
+				resultSetServices = stmtServices.executeQuery();
+				if (!resultSetServices.wasNull()) {
+
+					while (resultSetServices.next()) {
+						service = new TypeService(resultSetServices.getString("types_services"));
+						services.add(service);
+					}
+				}
+
+				// HORAIRES
+				heureOuverture = resultSet.getTime("Horaire_ouverture");
+				heureFermeture = resultSet.getTime("Horaire_fermeture");
+
+				// STATION
+				station = new Station(resultSet.getInt("id_Station"), adresse, resultSet.getString("Nom"), carburants,
+						services, heureOuverture, heureFermeture, joursFermeture, emplacement);
+
+				stations.add(station);
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			ConnexionManager.GetInstance().close();
+		}
+		return stations;
+
+	}
+
 	/**
 	 * Renvoie la liste des carburants Type: Carburant
 	 */

@@ -19,7 +19,7 @@ public class GestionRecherche {
 
 	public GestionRecherche() {
 		this.stationdao = new StationDao();
-		this.stations = (ArrayList<Station>) stationdao.getStations();
+		//this.stations = (ArrayList<Station>) stationdao.getStations();
 	}
 
 	public Recherche getRecherche() {
@@ -49,6 +49,7 @@ public class GestionRecherche {
 	 *   une liste de station
 	 */
 	public ArrayList<Station> recupereStations(Recherche recherche, ArrayList<Station> stations) {
+		this.stations = (ArrayList<Station>) stationdao.getStations();
 		Double distance;
 		ArrayList<Station> stationsTemp = null;
 
@@ -69,6 +70,81 @@ public class GestionRecherche {
 		// 2 - CALCUL Limite(Perimetre)
 		Borders limite = GeoProcessing.calculLimiteZone(positionDepart.getCoordonnee().getLatitude(),
 				positionDepart.getCoordonnee().getLongitude(), recherche.getCritere().getRayon());
+
+		// Latitude et longitude MIN/MAX
+		double latLimiteMax = limite.getBorderNO().getCoordonnee().getLatitude();
+		double latLimiteMin = limite.getBorderSE().getCoordonnee().getLatitude();
+		double longLimiteMax = limite.getBorderSE().getCoordonnee().getLongitude();
+		double longLimiteMin = limite.getBorderNO().getCoordonnee().getLongitude();
+
+		if (limite == null)
+			return null;
+
+		if (stations == null)
+			return null;
+		else
+			stationsTemp = new ArrayList<Station>();
+
+		// Récupère les stations incluses dans la zone limite
+		for (Station st : stations) {
+
+			double latStation = st.getAdresse().getPosition().getCoordonnee().getLatitude();
+			double longStation = st.getAdresse().getPosition().getCoordonnee().getLongitude();
+
+			if ((latStation <= latLimiteMax && latStation >= latLimiteMin)
+					&& (longStation <= longLimiteMax && longStation >= longLimiteMin)) {
+				stationsTemp.add(st);
+			}
+
+		}
+
+		if (stationsTemp == null)
+			return null;
+
+		// Recupère les stations incluses dans le périmètre de rayon r
+		for (Station st : stationsTemp) {
+			distance = GeoProcessing.distance(positionDepart.getCoordonnee().getLatitude(),
+					positionDepart.getCoordonnee().getLongitude(),
+					st.getAdresse().getPosition().getCoordonnee().getLatitude(),
+					st.getAdresse().getPosition().getCoordonnee().getLongitude());
+
+			if (distance <= recherche.getCritere().getRayon())
+				if(this.resultat == null)
+					this.resultat = new ArrayList<Station>();
+					
+					this.resultat.add(st);
+
+		}
+		return this.resultat;
+	}
+	
+	
+	public ArrayList<Station> recupereStations(Recherche recherche) {
+		Double distance;
+		ArrayList<Station> stationsTemp = null;
+
+		if (recherche == null)
+			return null;
+
+		// 1- GEOCODE ADRESSE ou récupère une position
+		Point positionDepart = null;
+
+		if (recherche.getCritere().getPosition() != null)
+			positionDepart = recherche.getCritere().getPosition();
+		else
+			positionDepart = GeoProcessing.geolocalise(recherche);
+
+		if (positionDepart == null)
+			return null;
+
+		// 2 - CALCUL Limite(Perimetre)
+		Borders limite = GeoProcessing.calculLimiteZone(positionDepart.getCoordonnee().getLatitude(),
+				positionDepart.getCoordonnee().getLongitude(), recherche.getCritere().getRayon());
+		
+		
+		//
+		this.stations = (ArrayList<Station>) stationdao.getStations(limite);
+		
 
 		// Latitude et longitude MIN/MAX
 		double latLimiteMax = limite.getBorderNO().getCoordonnee().getLatitude();
