@@ -14,8 +14,9 @@ public class Program {
 		// TODO Auto-generated method stub
 
 		String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
+
 		System.out.println("Debut Test n°1 @ " + timeStamp);
-		
+
 		Recherche recherche = new Recherche();
 		GestionRecherche grecherche = new GestionRecherche();
 		Critere critere = new Critere();
@@ -28,9 +29,7 @@ public class Program {
 		recherche.setCritere(critere);
 		critere.setRayon(30);
 
-		ArrayList<Station> stations = null;
 		ArrayList<Station> stationsRes = null;
-		
 		
 		stationsRes = grecherche.recupereStations(recherche);
 		if (stationsRes != null) {
@@ -48,6 +47,7 @@ public class Program {
 			System.out.println("Erreur");
 
 		timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
+
 		System.out.println("Fin Test n°1 @ " + timeStamp);
 
 		/*

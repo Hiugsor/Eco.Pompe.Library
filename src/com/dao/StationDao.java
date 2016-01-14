@@ -20,12 +20,11 @@ import com.processing.GeoProcessing;
 
 public class StationDao {
 
+	
 	/**
 	 * Recupère la liste de stations
-	 * 
-	 *
+	 * @param limite Border
 	 * @return retourne une liste de stations
-	 * 
 	 */
 	public List<Station> getStations(Borders limite) {
 
@@ -135,8 +134,10 @@ public class StationDao {
 
 	}
 
+	
 	/**
 	 * Renvoie la liste des carburants Type: Carburant
+	 * @return Liste des carburants
 	 */
 	public List<Carburant> getCarburants() {
 		ArrayList<Carburant> carburants = null;
@@ -167,8 +168,11 @@ public class StationDao {
 		return carburants;
 	}
 
+	
+	
 	/**
 	 * Renvoie une liste d'enseigne Type: string
+	 * @return Liste de noms des stations
 	 */
 	public List<String> getEnseignes() {
 		ArrayList<String> enseignes = null;

@@ -10,7 +10,6 @@ import com.dao.StationDao;
 
 public class GestionRecherche {
 
-	private static final String URL = "http://maps.googleapis.com/maps/api/geocode/json";
 	private ArrayList<Station> resultat;
 	private StationDao stationdao;
 	private Recherche recherche;
@@ -18,7 +17,6 @@ public class GestionRecherche {
 
 	public GestionRecherche() {
 		this.stationdao = new StationDao();
-		// this.stations = (ArrayList<Station>) stationdao.getStations();
 	}
 
 	public Recherche getRecherche() {
@@ -38,9 +36,17 @@ public class GestionRecherche {
 		return this.resultat;
 	}
 
-public ArrayList<Station> recupereStations(Recherche recherche) {
-		Double distance;
-		ArrayList<Station> stationsTemp = null;
+
+	/**
+	 * Récupère la liste des stations en fonction de la recherche : position
+	 * initiale ou adresse géolocalisée
+	 * 
+	 * @param recherche
+	 *            contient soit l'adresse de départ soit la position de départ
+	 * @return renvoie une liste de station
+	 */
+	public ArrayList<Station> recupereStations(Recherche recherche) {
+		
 
 		if (recherche == null)
 			return null;
@@ -69,6 +75,7 @@ public ArrayList<Station> recupereStations(Recherche recherche) {
 			return null;
 
 		// Recupère les stations incluses dans le périmètre de rayon r
+
 		for (Station st : stations) 
 		{
 			if (GeoProcessing.getDistance(positionDepart.getCoordonnee().getLatitude(),
@@ -81,6 +88,7 @@ public ArrayList<Station> recupereStations(Recherche recherche) {
 
 				this.resultat.add(st);
 			}
+
 
 		}
 		return this.resultat;

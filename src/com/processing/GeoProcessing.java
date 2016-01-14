@@ -47,10 +47,10 @@ public class GeoProcessing {
 	 
 	/**
 	 * Calcul de l'azimuth entre deux points avec les coordonnées géographiques
-	 * @param lat1Deg
-	 * @param lng1Deg
-	 * @param lat2Deg
-	 * @param lng2Deg
+	 * @param lat1Deg double
+	 * @param lng1Deg double
+	 * @param lat2Deg double
+	 * @param lng2Deg double
 	 * @return azimuth double
 	 */
 	public static double getAzimuth(double lat1Deg, double lng1Deg, double lat2Deg, double lng2Deg)
@@ -104,7 +104,7 @@ public class GeoProcessing {
 	 * @param latitudeDeg Double
 	 * @param longitudeDeg Double
 	 * @param rayon int
-	 * @return
+	 * @return Borders
 	 */
 	public static Borders getWGS84FrameLimits(double latitudeDeg, double longitudeDeg, int rayon)
 	{
