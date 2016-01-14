@@ -13,6 +13,5 @@ public interface IStationDao {
 		
 		public List<String> getEnseignes();
 
-		public List<Station> getStations(Borders limite);
-		
+				
  }
