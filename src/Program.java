@@ -1,4 +1,7 @@
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.bo.*;
@@ -10,7 +13,9 @@ public class Program {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		System.out.println("Test n°1");
+		String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
+
+		System.out.println("Debut Test n°1 @ " + timeStamp);
 
 		Recherche recherche = new Recherche();
 
@@ -29,62 +34,51 @@ public class Program {
 		ArrayList<Station> stationsRes = null;
 		StationDao stationdao = new StationDao();
 		stations = (ArrayList<Station>) stationdao.getStations();
-		stationsRes = grecherche.recupereStations(recherche, stations);
+		// stationsRes = grecherche.recupereStations(recherche, stations);
+		stationsRes = grecherche.recupereStations(recherche);
 		if (stationsRes != null) {
 			System.out.println("Nombre de stations :" + stationsRes.size());
-			for (Station st : stationsRes)
-			{
+			for (Station st : stationsRes) {
 				System.out.println("Nom : " + st.getNom() + "   Cp : " + st.getAdresse().getCodepostal() + "   Ville : "
 						+ st.getAdresse().getVille());
-				for(TypeService ts : st.getServices())
+				for (TypeService ts : st.getServices())
 					System.out.println("Service : " + ts.getNom());
-				
-				for(Carburant ts : st.getCarburants())
+
+				for (Carburant ts : st.getCarburants())
 					System.out.println("Carburants : " + ts.getNom());
 			}
 		} else
 			System.out.println("Erreur");
 
-		
-		
+		timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
+
+		System.out.println("Fin Test n°1 @ " + timeStamp);
+
 		/*
-		System.out.println("");
-		System.out.println("");
-		System.out.println("Test n°2");
-		grecherche = new GestionRecherche();
-		critere = new Critere();
-		Adresse adresse = new Adresse();
-		adresse.setRue("98 avenue de toulouse");
-		adresse.setVille("Montpellier");
-		adresse.setCodepostal("34000");
-		critere.setAdresse(adresse);
-		critere.setRayon(30);
-		recherche.setCritere(critere);
-		stations = null;
-		stationsRes = null;
-		stationdao = new StationDao();
-		stations = (ArrayList<Station>) stationdao.getStations();
-		stationsRes = grecherche.recupereStations(recherche, stations);
-		if (stationsRes != null) {
-			System.out.println("Nombre de stations :" + stationsRes.size());
-			for (Station st : stationsRes)
-				System.out.println("Nom : " + st.getNom() + "   Cp : " + st.getAdresse().getCodepostal() + "   Ville : "
-						+ st.getAdresse().getVille());
-		} else
-			System.out.println("");
-			*/
+		 * System.out.println(""); System.out.println(""); System.out.println(
+		 * "Test n°2"); grecherche = new GestionRecherche(); critere = new
+		 * Critere(); Adresse adresse = new Adresse(); adresse.setRue(
+		 * "98 avenue de toulouse"); adresse.setVille("Montpellier");
+		 * adresse.setCodepostal("34000"); critere.setAdresse(adresse);
+		 * critere.setRayon(30); recherche.setCritere(critere); stations = null;
+		 * stationsRes = null; stationdao = new StationDao(); stations =
+		 * (ArrayList<Station>) stationdao.getStations(); stationsRes =
+		 * grecherche.recupereStations(recherche, stations); if (stationsRes !=
+		 * null) { System.out.println("Nombre de stations :" +
+		 * stationsRes.size()); for (Station st : stationsRes)
+		 * System.out.println("Nom : " + st.getNom() + "   Cp : " +
+		 * st.getAdresse().getCodepostal() + "   Ville : " +
+		 * st.getAdresse().getVille()); } else System.out.println("");
+		 */
 		/*
-		StationDao stationdao = new StationDao();
-		List<Carburant> carburants = stationdao.getCarburants();
-		for(Carburant carb : carburants)
-			System.out.println("Nom: " + carb.getNom());
-		
-		List<String> enseignes = stationdao.getEnseignes();
-		for(String e : enseignes)
-			System.out.println("Nom: " + e);
-		*/
-		
-		
+		 * StationDao stationdao = new StationDao(); List<Carburant> carburants
+		 * = stationdao.getCarburants(); for(Carburant carb : carburants)
+		 * System.out.println("Nom: " + carb.getNom());
+		 * 
+		 * List<String> enseignes = stationdao.getEnseignes(); for(String e :
+		 * enseignes) System.out.println("Nom: " + e);
+		 */
+
 	}
 
 }
