@@ -30,11 +30,8 @@ public class Program {
 		recherche.setCritere(critere);
 		critere.setRayon(30);
 
-		ArrayList<Station> stations = null;
 		ArrayList<Station> stationsRes = null;
-		StationDao stationdao = new StationDao();
-		stations = (ArrayList<Station>) stationdao.getStations();
-		// stationsRes = grecherche.recupereStations(recherche, stations);
+
 		stationsRes = grecherche.recupereStations(recherche);
 		if (stationsRes != null) {
 			System.out.println("Nombre de stations :" + stationsRes.size());
