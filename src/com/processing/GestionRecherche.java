@@ -78,11 +78,10 @@ public class GestionRecherche {
 
 		for (Station st : stations) 
 		{
-			if (GeoProcessing.getDistance(positionDepart.getCoordonnee().getLatitude(),
-					positionDepart.getCoordonnee().getLongitude(),
-					st.getAdresse().getPosition().getCoordonnee().getLatitude(),
-					st.getAdresse().getPosition().getCoordonnee().getLongitude()) < recherche.getCritere().getRayon()) 
+			double distance = GeoProcessing.getDistance(positionDepart.getCoordonnee().getLatitude(),	positionDepart.getCoordonnee().getLongitude(),st.getAdresse().getPosition().getCoordonnee().getLatitude(),st.getAdresse().getPosition().getCoordonnee().getLongitude()) ;
+			if (distance < recherche.getCritere().getRayon()) 
 			{
+				st.getAdresse().getPosition().setDistance(distance);
 				if (this.resultat == null)
 					this.resultat = new ArrayList<Station>();
 

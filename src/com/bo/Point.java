@@ -3,9 +3,15 @@ package com.bo;
 public class Point {
 
 	private Coordonnees coordonnee;
-
 	private Color couleur;
-
+	private double distance;
+	public double getDistance() {
+		return distance;
+	}
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
+	
 	public Point() {
 		this.coordonnee = new Coordonnees();
 	}
