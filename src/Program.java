@@ -16,7 +16,7 @@ public class Program {
 		String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
 
 		System.out.println("Debut Test n°1 @ " + timeStamp);
-
+/*
 		Recherche recherche = new Recherche();
 		GestionRecherche grecherche = new GestionRecherche();
 		Critere critere = new Critere();
@@ -28,10 +28,12 @@ public class Program {
 		critere.setPosition(position);
 		recherche.setCritere(critere);
 		critere.setRayon(30);
-
+*/
+		GestionRecherche grecherche = new GestionRecherche();
 		ArrayList<Station> stationsRes = null;
 		
-		stationsRes = grecherche.recupereStations(recherche);
+		//stationsRes = grecherche.recupereStations(43.6244855,3.862568, 30);
+		stationsRes = grecherche.recupereStations("98 avenue de toulouse","34000" ,"Montpellier", 30);
 		if (stationsRes != null) {
 			System.out.println("Nombre de stations :" + stationsRes.size());
 			for (Station st : stationsRes) {
