@@ -32,11 +32,14 @@ public class Program {
 		GestionRecherche grecherche = new GestionRecherche();
 		ArrayList<Station> stationsRes = null;
 		
-		//stationsRes = grecherche.recupereStations(43.6244855,3.862568, 30);
-		stationsRes = grecherche.recupereStations("98 avenue de toulouse","34000" ,"Montpellier", 30);
+		stationsRes = grecherche.recupereStations(43.6244855,3.862568,"e85", 30);
+		//stationsRes = grecherche.recupereStations("98 avenue de toulouse","34000" ,"Montpellier","Gazole", 30);
 		if (stationsRes != null) {
 			System.out.println("Nombre de stations :" + stationsRes.size());
+			
 			for (Station st : stationsRes) {
+				System.out.println("Distance : " + st.getDistance());
+				/*
 				System.out.println("Nom : " + st.getNom() + "   Cp : " + st.getAdresse().getCodepostal() + "   Ville : "
 						+ st.getAdresse().getVille());
 				for (TypeService ts : st.getServices())
@@ -44,6 +47,7 @@ public class Program {
 
 				for (Carburant ts : st.getCarburants())
 					System.out.println("Carburants : " + ts.getNom());
+					*/
 			}
 		} else
 			System.out.println("Erreur");

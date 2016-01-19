@@ -26,7 +26,7 @@ public class StationDao {
 	 * @param limite Border
 	 * @return retourne une liste de stations
 	 */
-	public List<Station> getStations(Borders limite) {
+	public List<Station> getStations(Borders limite, String carburant) {
 
 		ArrayList<Station> stations = new ArrayList<Station>();
 		Station station = null;
@@ -48,7 +48,7 @@ public class StationDao {
 
 		String requeteStation = "SELECT * FROM  ecopompe.stations WHERE (latitude BETWEEN " + latMin + " AND " + latMax
 				+ ") AND (longitude BETWEEN " + longMin + " AND " + longMax + ")";
-		String requeteCarbu = "SELECT nom, prix FROM  ecopompe.carburants INNER JOIN vendre ON vendre.id_carburant = carburants.id_carburant WHERE vendre.id_station = ?";
+		String requeteCarbu = "SELECT nom, prix FROM  ecopompe.carburants INNER JOIN vendre ON vendre.id_carburant = carburants.id_carburant WHERE nom = ? AND vendre.id_station = ?";
 		String requeteServices = "SELECT types_services FROM  ecopompe.services INNER JOIN proposer ON proposer.id_service = services.id_service WHERE proposer.id_station = ?";
 
 		
@@ -86,8 +86,8 @@ public class StationDao {
 				
 				// CARBURANTS
 				carburants = new ArrayList<Carburant>();
-
-				stmtCarbu.setString(1, resultSet.getString("id_station"));
+				stmtCarbu.setString(1, carburant);
+				stmtCarbu.setString(2, resultSet.getString("id_station"));
 				resultSetCarbu = stmtCarbu.executeQuery();
 				if (!resultSetCarbu.wasNull()) {
 
