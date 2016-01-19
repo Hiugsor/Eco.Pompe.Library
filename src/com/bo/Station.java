@@ -3,9 +3,9 @@ package com.bo;
 
 import java.util.List;
 import java.sql.Time;
-import java.util.Date;
 
-public class Station {
+
+public class Station  {
 
 	private Integer id;
 
@@ -31,17 +31,16 @@ public class Station {
 
 	private TypeRoute typeRoute;
 
-	public Station(Integer id, Adresse adresse, String nom,  List<Carburant> carburants,
-			List<TypeService> services, Time heureOuverture, Time heureFermeture, List<String> joursFermeture,
-			TypeRoute emplacement) {
+	public Station(Integer id, Adresse adresse, String nom, List<Carburant> carburants, List<TypeService> services,
+			Time heureOuverture, Time heureFermeture, List<String> joursFermeture, TypeRoute emplacement) {
 		this.setAdresse(adresse);
 		this.setNom(nom);
-		this.setCarburants(carburants); 
-		this.setServices(services); 
+		this.setCarburants(carburants);
+		this.setServices(services);
 		this.setHeureOuverture(heureOuverture);
-		this.setHeureFermeture(heureFermeture); 
-		this.setEmplacement(emplacement); 
-		this.setJoursFermeture(joursFermeture); 
+		this.setHeureFermeture(heureFermeture);
+		this.setEmplacement(emplacement);
+		this.setJoursFermeture(joursFermeture);
 		this.setId(id);
 	}
 
@@ -146,5 +145,16 @@ public class Station {
 	public TypeRoute getTypeRoute() {
 		return typeRoute;
 	}
+
+	private Double distance;
+
+	public Double getDistance() {
+		return distance;
+	}
+
+	public void setDistance(Double distance) {
+		this.distance = distance;
+	}
+
 
 }
