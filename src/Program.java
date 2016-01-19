@@ -32,8 +32,9 @@ public class Program {
 		GestionRecherche grecherche = new GestionRecherche();
 		ArrayList<Station> stationsRes = null;
 		
-		stationsRes = grecherche.recupereStations(43.6244855,3.862568,"e85", 30);
+		//stationsRes = grecherche.recupereStations(43.6244855,3.862568,"e85", 30);
 		//stationsRes = grecherche.recupereStations("98 avenue de toulouse","34000" ,"Montpellier","Gazole", 30);
+		stationsRes = grecherche.recupereStations("98 avenue de toulouse 34000 Montpellier","Gazole", 30);
 		if (stationsRes != null) {
 			System.out.println("Nombre de stations :" + stationsRes.size());
 			

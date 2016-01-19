@@ -186,11 +186,18 @@ public class GeoProcessing {
 		try {
 
 			// System.out.println("AVANT le results");
+			
+			if(recherche.getCritere().getAdresse().getAdresseComplete() == "")
 			results = GeocodingApi.geocode(context,
 					recherche.getCritere().getAdresse().getRue() + ", "
 							+ recherche.getCritere().getAdresse().getCodepostal() + ", "
 							+ recherche.getCritere().getAdresse().getVille())
 					.await();
+			else
+				results = GeocodingApi.geocode(context,
+						recherche.getCritere().getAdresse().getAdresseComplete()).await();
+			
+			
 			// System.out.println("APRES le results");
 
 			if (results.length != 0) {
