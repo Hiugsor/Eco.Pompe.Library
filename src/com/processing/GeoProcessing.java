@@ -186,11 +186,18 @@ public class GeoProcessing {
 		try {
 
 			// System.out.println("AVANT le results");
+			
+			if(recherche.getCritere().getAdresse().getAdresseComplete() == "")
 			results = GeocodingApi.geocode(context,
 					recherche.getCritere().getAdresse().getRue() + ", "
 							+ recherche.getCritere().getAdresse().getCodepostal() + ", "
 							+ recherche.getCritere().getAdresse().getVille())
 					.await();
+			else
+				results = GeocodingApi.geocode(context,
+						recherche.getCritere().getAdresse().getAdresseComplete()).await();
+			
+			
 			// System.out.println("APRES le results");
 
 			if (results.length != 0) {
@@ -214,10 +221,21 @@ public class GeoProcessing {
 		return position;
 	}
 
+	public static List<Station> triCroissant(List<Station> liste)
+	{
+		List<Station>listeTemp = liste;
+		Station stationTemp = null;
+        for (int i=0 ;i<=(liste.size()-2);i++)
+            for (int j=(liste.size()-1);i < j;j--)
+                    if (liste.get(j).getDistance() < liste.get(j-1).getDistance())
+                    {
+                    	stationTemp =liste.get(j-1);
+                    	liste.set(j-1,liste.get(j));
+                    	liste.set(j, stationTemp);
+                    }
+		return listeTemp;
 	
+	}
 	
 
 }
-
-
-
