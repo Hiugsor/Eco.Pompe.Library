@@ -2,6 +2,18 @@ package com.bo;
 
 public class Adresse {
 
+	
+	 private String adresseComplete;
+	 
+	 
+	public String getAdresseComplete() {
+		return adresseComplete;
+	}
+
+	public void setAdresseComplete(String adresseComplete) {
+		this.adresseComplete = adresseComplete;
+	}
+
 	private String rue;
 
 	private String codepostal;

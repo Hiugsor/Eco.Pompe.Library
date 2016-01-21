@@ -20,15 +20,17 @@ import com.processing.GeoProcessing;
 
 public class StationDao {
 
-	
 	/**
 	 * Recupère la liste de stations
-	 * @param limite Border
+	 * 
+	 * @param limite
+	 *            Border
 	 * @return retourne une liste de stations
 	 */
 	public List<Station> getStations(Borders limite, String carburant) {
 
 		ArrayList<Station> stations = new ArrayList<Station>();
+		ArrayList<Station> stationCarbu = new ArrayList<Station>();
 		Station station = null;
 		Adresse adresse = null;
 		ArrayList<Carburant> carburants = new ArrayList<Carburant>();
@@ -36,7 +38,7 @@ public class StationDao {
 		Time heureOuverture = null;
 		Time heureFermeture = null;
 		ArrayList<String> joursFermeture = null;
-		TypeRoute emplacement = null;
+		TypeRoute typeRoute = null;
 		Carburant carbu = null;
 
 		TypeService service = null;
@@ -50,13 +52,13 @@ public class StationDao {
 				+ ") AND (longitude BETWEEN " + longMin + " AND " + longMax + ")";
 		String requeteCarbu = "SELECT nom, prix FROM  ecopompe.carburants INNER JOIN vendre ON vendre.id_carburant = carburants.id_carburant WHERE nom = ? AND vendre.id_station = ?";
 		String requeteServices = "SELECT types_services FROM  ecopompe.services INNER JOIN proposer ON proposer.id_service = services.id_service WHERE proposer.id_station = ?";
-
-		
+		String requeteJFermeture = "SELECT jour FROM  ecopompe.jours INNER JOIN nontravailler ON nontravailler.id_Jour = jours.id_Jour WHERE nontravailler.id_station = ?";
 
 		ConnexionManager.GetInstance().open();
 		ResultSet resultSet = null;
 		ResultSet resultSetCarbu = null;
 		ResultSet resultSetServices = null;
+		ResultSet resultJFermeture = null;
 		int i = 0;
 		try {
 
@@ -65,9 +67,11 @@ public class StationDao {
 					.prepareStatement(requeteCarbu);
 			PreparedStatement stmtServices = (PreparedStatement) ConnexionManager.GetInstance().GetConnection()
 					.prepareStatement(requeteServices);
+			PreparedStatement stmtJFermeture = (PreparedStatement) ConnexionManager.GetInstance().GetConnection()
+					.prepareStatement(requeteJFermeture);
 
 			resultSet = stmt.executeQuery(requeteStation);
-		PreparedStatement pstmt = null;
+			PreparedStatement pstmt = null;
 
 			while (resultSet.next()) {
 
@@ -83,7 +87,6 @@ public class StationDao {
 				position.setCoordonnee(coordonnee);
 				adresse.setPosition(position);
 
-				
 				// CARBURANTS
 				carburants = new ArrayList<Carburant>();
 				stmtCarbu.setString(1, carburant);
@@ -111,6 +114,19 @@ public class StationDao {
 						services.add(service);
 					}
 				}
+				// JOUR FERMETURE
+				stmtJFermeture.setString(1, resultSet.getString("id_station"));
+				resultJFermeture = stmtJFermeture.executeQuery();
+				if (!resultJFermeture.wasNull()) {
+					joursFermeture = new ArrayList<String>();
+					while (resultJFermeture.next()) {
+						joursFermeture.add(resultJFermeture.getString("jour"));
+
+					}
+				}
+
+				// TYPEROUTE
+				typeRoute = new TypeRoute(resultSet.getString("Type_route"));
 
 				// HORAIRES
 				heureOuverture = resultSet.getTime("Horaire_ouverture");
@@ -118,25 +134,32 @@ public class StationDao {
 
 				// STATION
 				station = new Station(resultSet.getInt("id_Station"), adresse, resultSet.getString("Nom"), carburants,
-						services, heureOuverture, heureFermeture, joursFermeture, emplacement);
+						services, heureOuverture, heureFermeture, joursFermeture, typeRoute);
 
 				stations.add(station);
 
 			}
-
+			
+			for (Station st : stations)
+				if (st.getCarburants() != null && st.getCarburants().size() > 0)
+					for (Carburant c : st.getCarburants())
+						if (c.getNom().toLowerCase().equals(carburant.toLowerCase()))
+							stationCarbu.add(st);
+			
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			ConnexionManager.GetInstance().close();
 		}
-		return stations;
+		return stationCarbu;
 
 	}
 
-	
 	/**
 	 * Renvoie la liste des carburants Type: Carburant
+	 * 
 	 * @return Liste des carburants
 	 */
 	public List<Carburant> getCarburants() {
@@ -168,10 +191,9 @@ public class StationDao {
 		return carburants;
 	}
 
-	
-	
 	/**
 	 * Renvoie une liste d'enseigne Type: string
+	 * 
 	 * @return Liste de noms des stations
 	 */
 	public List<String> getEnseignes() {
