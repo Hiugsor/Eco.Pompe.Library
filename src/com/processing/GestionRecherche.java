@@ -64,7 +64,9 @@ public class GestionRecherche {
 			positionDepart = recherche.getCritere().getPosition();
 		else
 			positionDepart = GeoProcessing.geolocalise(recherche);
-
+			
+		
+		System.out.println("Latitude :" + positionDepart.getCoordonnee().getLatitude() + "   /  Longitude :" + positionDepart.getCoordonnee().getLongitude());
 		if (positionDepart == null)
 			return null;
 
@@ -102,6 +104,9 @@ public class GestionRecherche {
 
 		}
 
+		if (this.resultat == null)
+			return null;
+		
 		Collections.sort(this.resultat, new Comparator<Station>() {
 
 			@Override
@@ -140,8 +145,8 @@ public class GestionRecherche {
 		Carburant carbu = new Carburant();
 		carbu.setNom(carburant);
 		critere.setCarburant(carbu);
-		coordonnee.setLatitude(43.6244855);
-		coordonnee.setLongitude(3.862568);
+		coordonnee.setLatitude(latitude);
+		coordonnee.setLongitude(longitude);
 		position.setCoordonnee(coordonnee);
 		critere.setPosition(position);
 		critere.setRayon(rayon);
@@ -188,9 +193,13 @@ public class GestionRecherche {
 
 	/**
 	 * Recupere une liste de station en fonction d'une adresse et d'un rayon
-	 * @param adresseC  Adresse complète String
-	 * @param carburant String
-	 * @param rayon Int
+	 * 
+	 * @param adresseC
+	 *            Adresse complète String
+	 * @param carburant
+	 *            String
+	 * @param rayon
+	 *            Int
 	 * @return liste de stations
 	 */
 	public ArrayList<Station> recupereStations(String adresseC, String carburant, int rayon) {

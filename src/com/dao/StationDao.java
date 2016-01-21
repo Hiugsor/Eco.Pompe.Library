@@ -30,6 +30,7 @@ public class StationDao {
 	public List<Station> getStations(Borders limite, String carburant) {
 
 		ArrayList<Station> stations = new ArrayList<Station>();
+		ArrayList<Station> stationCarbu = new ArrayList<Station>();
 		Station station = null;
 		Adresse adresse = null;
 		ArrayList<Carburant> carburants = new ArrayList<Carburant>();
@@ -138,14 +139,21 @@ public class StationDao {
 				stations.add(station);
 
 			}
-
+			
+			for (Station st : stations)
+				if (st.getCarburants() != null && st.getCarburants().size() > 0)
+					for (Carburant c : st.getCarburants())
+						if (c.getNom().toLowerCase().equals(carburant.toLowerCase()))
+							stationCarbu.add(st);
+			
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			ConnexionManager.GetInstance().close();
 		}
-		return stations;
+		return stationCarbu;
 
 	}
 

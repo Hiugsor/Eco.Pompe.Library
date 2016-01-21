@@ -16,44 +16,56 @@ public class Program {
 		String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
 
 		System.out.println("Debut Test n°1 @ " + timeStamp);
-/*
-		Recherche recherche = new Recherche();
-		GestionRecherche grecherche = new GestionRecherche();
-		Critere critere = new Critere();
-		Point position = new Point();
-		Coordonnees coordonnee = new Coordonnees();
-		coordonnee.setLatitude(43.6244855);
-		coordonnee.setLongitude(3.862568);
-		position.setCoordonnee(coordonnee);
-		critere.setPosition(position);
-		recherche.setCritere(critere);
-		critere.setRayon(30);
-*/
+		/*
+		 * Recherche recherche = new Recherche(); GestionRecherche grecherche =
+		 * new GestionRecherche(); Critere critere = new Critere(); Point
+		 * position = new Point(); Coordonnees coordonnee = new Coordonnees();
+		 * coordonnee.setLatitude(43.6244855);
+		 * coordonnee.setLongitude(3.862568);
+		 * position.setCoordonnee(coordonnee); critere.setPosition(position);
+		 * recherche.setCritere(critere); critere.setRayon(30);
+		 */
 		GestionRecherche grecherche = new GestionRecherche();
 		ArrayList<Station> stationsRes = null;
-		
-		stationsRes = grecherche.recupereStations(43.6244855,3.862568,"e85", 30);
-		//stationsRes = grecherche.recupereStations("98 avenue de toulouse","34000" ,"Montpellier","Gazole", 30);
-		//stationsRes = grecherche.recupereStations("98 avenue de toulouse 34000 Montpellier","Gazole", 30);
+
+		// stationsRes =
+		// grecherche.recupereStations(43.6244855,3.862568,"Gazole", 30);
+		// = grecherche.recupereStations(48.865562,2.447129,"Gazole", 30);
+
+		// 10 rue DANTON MONTREUIL 63100
+		 //stationsRes = grecherche.recupereStations("10 rue danton 93100  Montreuil","e10", 30);
+		// stationsRes = grecherche.recupereStations(48.865562,2.447129,"Gazole", 30);
+		 stationsRes = grecherche.recupereStations(48.8656267,2.447129999,"e10", 30);
+		//stationsRes = grecherche.recupereStations(48.865627, 2.4472, "e10", 30);
+
+		// stationsRes = grecherche.recupereStations("98 avenue de
+		// toulouse","34000" ,"Montpellier","Gazole", 30);
+		// stationsRes = grecherche.recupereStations("98 avenue de toulouse
+		// 34000 Montpellier","Gazole", 30);
+		// stationsRes = grecherche.recupereStations("13 avenue madame curie
+		// 93220 gagny","Gazole", 30);
 		if (stationsRes != null) {
 			System.out.println("Nombre de stations :" + stationsRes.size());
-			
+
 			for (Station st : stationsRes) {
-				
-				System.out.println("Type route : " + st.getTypeRoute().getNom());
-				System.out.println("Jour Fermeture    Station: :" + st.getNom());
-				for(String j : st.getJoursFermeture())
-					System.out.println("fermé le :" + j);
-				System.out.println("Distance : " + st.getDistance());
-				
+				/*
+				 * System.out.println("Type route : " +
+				 * st.getTypeRoute().getNom()); System.out.println(
+				 * "Jour Fermeture    Station: :" + st.getNom()); for(String j :
+				 * st.getJoursFermeture()) System.out.println("fermé le :" + j);
+				 * System.out.println("Distance : " + st.getDistance());
+				 * 
+				 * System.out.println("Nom : " + st.getNom() + "   Cp : " +
+				 * st.getAdresse().getCodepostal() + "   Ville : " +
+				 * st.getAdresse().getVille()); for (TypeService ts :
+				 * st.getServices()) System.out.println("Service : " +
+				 * ts.getNom());
+				 */
 				System.out.println("Nom : " + st.getNom() + "   Cp : " + st.getAdresse().getCodepostal() + "   Ville : "
 						+ st.getAdresse().getVille());
-				for (TypeService ts : st.getServices())
-					System.out.println("Service : " + ts.getNom());
-
 				for (Carburant ts : st.getCarburants())
-					System.out.println("Carburants : " + ts.getNom());
-					
+					System.out.println("Carburants : " + ts.getNom() + " Prix : " + ts.getPrix());
+
 			}
 		} else
 			System.out.println("Erreur");
@@ -86,6 +98,10 @@ public class Program {
 		 * List<String> enseignes = stationdao.getEnseignes(); for(String e :
 		 * enseignes) System.out.println("Nom: " + e);
 		 */
+		StationDao stationdao = new StationDao();
+		List<Carburant> carburants = stationdao.getCarburants();
+		for (Carburant carb : carburants)
+			System.out.println("Nom: " + carb.getNom());
 
 	}
 
