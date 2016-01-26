@@ -1,10 +1,11 @@
-import java.sql.Timestamp;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import com.bo.*;
+import com.dao.ConnexionParameters;
 import com.dao.StationDao;
 import com.processing.GestionRecherche;
 
@@ -16,6 +17,22 @@ public class Program {
 		String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
 
 		System.out.println("Debut Test n°1 @ " + timeStamp);
+
+		System.out.println("URL: "+ConnexionParameters.getDatabaseUrl());
+/*
+		Recherche recherche = new Recherche();
+		GestionRecherche grecherche = new GestionRecherche();
+		Critere critere = new Critere();
+		Point position = new Point();
+		Coordonnees coordonnee = new Coordonnees();
+		coordonnee.setLatitude(43.6244855);
+		coordonnee.setLongitude(3.862568);
+		position.setCoordonnee(coordonnee);
+		critere.setPosition(position);
+		recherche.setCritere(critere);
+		critere.setRayon(30);
+*/
+
 		/*
 		 * Recherche recherche = new Recherche(); GestionRecherche grecherche =
 		 * new GestionRecherche(); Critere critere = new Critere(); Point
@@ -25,6 +42,7 @@ public class Program {
 		 * position.setCoordonnee(coordonnee); critere.setPosition(position);
 		 * recherche.setCritere(critere); critere.setRayon(30);
 		 */
+
 		GestionRecherche grecherche = new GestionRecherche();
 		ArrayList<Station> stationsRes = null;
 
