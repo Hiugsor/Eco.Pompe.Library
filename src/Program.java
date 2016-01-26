@@ -1,11 +1,10 @@
-import java.sql.Timestamp;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import com.bo.*;
-import com.dao.StationDao;
+import com.dao.ConnexionParameters;
 import com.processing.GestionRecherche;
 
 public class Program {
@@ -16,6 +15,7 @@ public class Program {
 		String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
 
 		System.out.println("Debut Test n°1 @ " + timeStamp);
+		System.out.println("URL: "+ConnexionParameters.getDatabaseUrl());
 /*
 		Recherche recherche = new Recherche();
 		GestionRecherche grecherche = new GestionRecherche();

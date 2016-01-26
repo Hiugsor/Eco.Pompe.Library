@@ -174,12 +174,15 @@ public class GeoProcessing {
 		Point position = null;
 		Coordonnees coordonnee = null;
 		GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyBI_p53rZMpZby3ZK93f0HgnK7UBE73zEM");
-
-		SocketAddress addr = new InetSocketAddress("10.127.254.1", 80);
-		Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
-
-		context.setProxy(proxy);
-
+		
+		String proxyAddress = PropertyLoader.loadPropertie("proxy");
+		if (!proxyAddress.equals(null))
+		{
+			System.out.println("proxy présent: "+proxyAddress);
+			SocketAddress addr = new InetSocketAddress(proxyAddress, 80);
+			Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
+			context.setProxy(proxy);
+		}
 		// System.out.println("CA COINCE ?");
 		GeocodingResult[] results;
 
