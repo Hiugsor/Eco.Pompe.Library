@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.app.StringOrder;
 import com.bo.Carburant;
+import com.bo.Station;
 import com.bo.Stats;
 import com.mysql.jdbc.CallableStatement;
 import com.mysql.jdbc.Statement;
@@ -104,6 +105,128 @@ public class VendreDao {
 			ex.getMessage();
 		} finally {
 			ConnexionManager.GetInstance().close();
+		}
+		return listMoyenne;
+	}
+
+	public static List<Stats> recupereStats(List<Station> listStations) {
+
+		List<Stats> listMoyenne = new ArrayList<Stats>();
+		Stats itemStat = null;
+		int nbGazole = 0;
+		int nbSP95 = 0;
+		int nbE85 = 0;
+		int nbGPLc = 0;
+		int nbE10 = 0;
+		int nbSP98 = 0;
+
+		Float sumGazole = 0f;
+		Float sumSP95 = 0f;
+		Float sumE85 = 0f;
+		Float sumGPLc = 0f;
+		Float sumE10 = 0f;
+		Float sumSP98 = 0f;
+
+		Float avgGazole = 0f;
+		Float avgSP95 = 0f;
+		Float avgE85 = 0f;
+		Float avgGPLc = 0f;
+		Float avgE10 = 0f;
+		Float avgSP98 = 0f;
+
+		if (listStations != null) {
+			for (Station st : listStations) {
+				for (Carburant carb : st.getCarburants())
+					switch (carb.getNom()) {
+
+					case "Gazole":
+						nbGazole++;
+						sumGazole += carb.getPrix();
+						break;
+					case "SP95":
+						nbSP95++;
+						sumSP95 += carb.getPrix();
+						break;
+					case "E85":
+						nbE85++;
+						sumE85 += carb.getPrix();
+						break;
+					case "GPLc":
+						nbGPLc++;
+						sumGPLc += carb.getPrix();
+						break;
+					case "E10":
+						nbE10++;
+						sumE10 += carb.getPrix();
+						break;
+					case "SP98":
+						nbSP98++;
+						sumSP98 += carb.getPrix();
+						break;
+					}
+			}
+
+		}
+
+		Carburant carburant = null;
+		if (nbGazole > 0) {
+			carburant = new Carburant();
+			carburant.setNom("Gazole");
+			avgGazole = (sumGazole / nbGazole);
+			itemStat = new Stats();
+			itemStat.setCarburant(carburant);
+			itemStat.setMoyenne(avgGazole);
+			listMoyenne.add(itemStat);
+		}
+
+		if (nbSP95 > 0) {
+			carburant = new Carburant();
+			carburant.setNom("SP95");
+			avgSP95 = (sumSP95 / nbSP95);
+			itemStat = new Stats();
+			itemStat.setCarburant(carburant);
+			itemStat.setMoyenne(avgSP95);
+			listMoyenne.add(itemStat);
+		}
+
+		if (nbE85 > 0) {
+			carburant = new Carburant();
+			carburant.setNom("E85");
+			avgE85 = (sumE85 / nbE85);
+			itemStat = new Stats();
+			itemStat.setCarburant(carburant);
+			itemStat.setMoyenne(avgE85);
+			listMoyenne.add(itemStat);
+		}
+
+		if (nbGPLc > 0) {
+			carburant = new Carburant();
+			carburant.setNom("GPLc");
+			avgGPLc = (sumGPLc / nbGPLc);
+			itemStat = new Stats();
+			itemStat.setCarburant(carburant);
+			itemStat.setMoyenne(avgGPLc);
+			listMoyenne.add(itemStat);
+		}
+
+		if (nbE10 > 0) {
+			carburant = new Carburant();
+			carburant.setNom("E10");
+			avgE10 = (sumE10 / nbE10);
+			itemStat = new Stats();
+			itemStat.setCarburant(carburant);
+			itemStat.setMoyenne(avgE10);
+			listMoyenne.add(itemStat);
+		}
+
+		if (nbSP98 > 0) {
+			carburant = new Carburant();
+			carburant.setNom("SP98");
+			avgSP98 = (sumSP98 / nbSP98);
+			itemStat = new Stats();
+			itemStat.setCarburant(carburant);
+			itemStat.setMoyenne(avgSP98);
+			listMoyenne.add(itemStat);
 		}
 		return listMoyenne;
 	}
