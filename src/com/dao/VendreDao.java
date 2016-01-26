@@ -40,7 +40,7 @@ public class VendreDao {
 			requeteSql.setInt(3, idCarburant);
 			System.out.println("requete " + requeteSql);
 			requeteSql.executeUpdate();
-		} catch (SQLException sqle) {
+		} catch (Exception sqle) {
 			sqle.printStackTrace();
 
 		}
@@ -84,8 +84,12 @@ public class VendreDao {
 
 	}
 
+	/**
+	 * Recupere les moyennes des prix des carburants en fonction de la date la plus récente
+	 * @return une liste de Stats qui contient un objet Carburant et une moyenne
+	 */
 	public static List<Stats> recupereStatsNat() {
-		String requete = "SELECT c.nom, sn.Moy_Nation FROM ecopompetest.stat_nationnale sn INNER JOIN ecopompetest.carburants c ON c.id_Carburant = sn.id_carburant WHERE sn.Date_M_a_J = ( SELECT max(Date_M_a_J) FROM ecopompetest.stat_nationnale);";
+		String requete = "SELECT c.nom, sn.Moy_Nation FROM ecopompe.stat_nationnale sn INNER JOIN ecopompe.carburants c ON c.id_Carburant = sn.id_carburant WHERE sn.Date_M_a_J = ( SELECT max(Date_M_a_J) FROM ecopompe.stat_nationnale);";
 		List<Stats> listMoyenne = new ArrayList<Stats>();
 		Stats itemStat = null;
 		ResultSet resultSet = null;
@@ -109,6 +113,12 @@ public class VendreDao {
 		return listMoyenne;
 	}
 
+	
+	/**
+	 * Recupere les moyennes des prix des carburants à partir d'une liste de station
+	 * @param listStations la liste de stations en fonction d'un rayon
+	 * @return une liste de Stats qui contient un objet Carburant et une moyenne
+	 */
 	public static List<Stats> recupereStats(List<Station> listStations) {
 
 		List<Stats> listMoyenne = new ArrayList<Stats>();
