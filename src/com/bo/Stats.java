@@ -1,25 +1,28 @@
 
 package com.bo;
-import java.util.List;
+
+
 
 public class Stats {
 
 	private Float moyenne;
 
-	public Stats(Float moyenne) {
-		this.moyenne = moyenne;
+	public Stats() {
+		
 	}
 
-	public List<?> recupereMoyenneNat(List<Station> stations) {
-		return null;
+	private Carburant carburant;
+
+	public Carburant getCarburant() {
+		return this.carburant;
 	}
 
-	public List<?> recupereMoyennePerimetre(List<Station> stations) {
-		return null;
+	public void setCarburant(Carburant carburant) {
+		this.carburant = carburant;
 	}
 
 	public void setMoyenne(Float moyenne) {
-
+		this.moyenne = moyenne;
 	}
 
 	public Float getMoyenne() {
