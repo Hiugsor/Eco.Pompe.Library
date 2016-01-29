@@ -66,9 +66,11 @@ public class GestionRecherche {
 			positionDepart = GeoProcessing.geolocalise(recherche);
 			
 		
-		System.out.println("Latitude :" + positionDepart.getCoordonnee().getLatitude() + "   /  Longitude :" + positionDepart.getCoordonnee().getLongitude());
+		
 		if (positionDepart == null)
 			return null;
+		
+		System.out.println("Latitude :" + positionDepart.getCoordonnee().getLatitude() + "   /  Longitude :" + positionDepart.getCoordonnee().getLongitude());
 
 		// 2 - CALCUL Limite(Perimetre)
 		Borders limite = GeoProcessing.getWGS84FrameLimits(positionDepart.getCoordonnee().getLatitude(),

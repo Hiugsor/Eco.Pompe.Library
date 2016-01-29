@@ -49,9 +49,8 @@ public class Program {
 		// = grecherche.recupereStations(48.865562,2.447129,"Gazole", 30);
 
 		// 10 rue DANTON MONTREUIL 63100
-		// stationsRes = grecherche.recupereStations("10 rue danton 93100
-		// Montreuil","e10", 30);
-		stationsRes = grecherche.recupereStations(48.865562, 2.447129, "Gazole", 30);
+		stationsRes = grecherche.recupereStations("10 rue danton 93100 Montreuil","e10", 30);
+		//stationsRes = grecherche.recupereStations(48.865562, 2.447129, "Gazole", 30);
 		// stationsRes =
 		// grecherche.recupereStations(48.8656267,2.447129999,"e10", 30);
 		// stationsRes = grecherche.recupereStations(48.865627, 2.4472, "e10",
