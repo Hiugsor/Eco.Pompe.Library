@@ -1,12 +1,15 @@
-import java.sql.Timestamp;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import com.bo.*;
+import com.dao.ConnexionParameters;
 import com.dao.StationDao;
+import com.dao.VendreDao;
 import com.processing.GestionRecherche;
+import com.processing.PropertyLoader;
 
 public class Program {
 
@@ -16,6 +19,8 @@ public class Program {
 		String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
 
 		System.out.println("Debut Test n°1 @ " + timeStamp);
+
+		// System.out.println("URL: "+ConnexionParameters.getDatabaseUrl());
 		/*
 		 * Recherche recherche = new Recherche(); GestionRecherche grecherche =
 		 * new GestionRecherche(); Critere critere = new Critere(); Point
@@ -25,6 +30,17 @@ public class Program {
 		 * position.setCoordonnee(coordonnee); critere.setPosition(position);
 		 * recherche.setCritere(critere); critere.setRayon(30);
 		 */
+
+		/*
+		 * Recherche recherche = new Recherche(); GestionRecherche grecherche =
+		 * new GestionRecherche(); Critere critere = new Critere(); Point
+		 * position = new Point(); Coordonnees coordonnee = new Coordonnees();
+		 * coordonnee.setLatitude(43.6244855);
+		 * coordonnee.setLongitude(3.862568);
+		 * position.setCoordonnee(coordonnee); critere.setPosition(position);
+		 * recherche.setCritere(critere); critere.setRayon(30);
+		 */
+
 		GestionRecherche grecherche = new GestionRecherche();
 		ArrayList<Station> stationsRes = null;
 
@@ -33,10 +49,12 @@ public class Program {
 		// = grecherche.recupereStations(48.865562,2.447129,"Gazole", 30);
 
 		// 10 rue DANTON MONTREUIL 63100
-		 //stationsRes = grecherche.recupereStations("10 rue danton 93100  Montreuil","e10", 30);
-		// stationsRes = grecherche.recupereStations(48.865562,2.447129,"Gazole", 30);
-		 stationsRes = grecherche.recupereStations(48.8656267,2.447129999,"e10", 30);
-		//stationsRes = grecherche.recupereStations(48.865627, 2.4472, "e10", 30);
+		stationsRes = grecherche.recupereStations("10 rue danton 93100 Montreuil","e10", 30);
+		//stationsRes = grecherche.recupereStations(48.865562, 2.447129, "Gazole", 30);
+		// stationsRes =
+		// grecherche.recupereStations(48.8656267,2.447129999,"e10", 30);
+		// stationsRes = grecherche.recupereStations(48.865627, 2.4472, "e10",
+		// 30);
 
 		// stationsRes = grecherche.recupereStations("98 avenue de
 		// toulouse","34000" ,"Montpellier","Gazole", 30);
@@ -61,18 +79,16 @@ public class Program {
 				 * st.getServices()) System.out.println("Service : " +
 				 * ts.getNom());
 				 */
-				System.out.println("Nom : " + st.getNom() + "   Cp : " + st.getAdresse().getCodepostal() + "   Ville : "
-						+ st.getAdresse().getVille());
-				for (Carburant ts : st.getCarburants())
-					System.out.println("Carburants : " + ts.getNom() + " Prix : " + ts.getPrix());
-
+				/*
+				 * System.out.println("Nom : " + st.getNom() + "   Cp : " +
+				 * st.getAdresse().getCodepostal() + "   Ville : " +
+				 * st.getAdresse().getVille()); for (Carburant ts :
+				 * st.getCarburants()) System.out.println("Carburants : " +
+				 * ts.getNom() + " Prix : " + ts.getPrix());
+				 */
 			}
 		} else
 			System.out.println("Erreur");
-
-		timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
-
-		System.out.println("Fin Test n°1 @ " + timeStamp);
 
 		/*
 		 * System.out.println(""); System.out.println(""); System.out.println(
@@ -98,10 +114,25 @@ public class Program {
 		 * List<String> enseignes = stationdao.getEnseignes(); for(String e :
 		 * enseignes) System.out.println("Nom: " + e);
 		 */
-		StationDao stationdao = new StationDao();
-		List<Carburant> carburants = stationdao.getCarburants();
-		for (Carburant carb : carburants)
-			System.out.println("Nom: " + carb.getNom());
+		/*
+		 * StationDao stationdao = new StationDao(); List<Carburant> carburants
+		 * = stationdao.getCarburants(); for (Carburant carb : carburants)
+		 * System.out.println("Nom: " + carb.getNom());
+		 */
+
+		List<Stats> liste = VendreDao.recupereStatsNat();
+		for (Stats carb : liste)
+			System.out.println("Nom: " + carb.getCarburant().getNom() + " moyenne : " + carb.getMoyenne());
+
+		System.out.println("Prix carburant dans un rayon");
+		if (stationsRes != null) {
+			liste = VendreDao.recupereStats(stationsRes);
+			for (Stats carb : liste)
+				System.out.println("Nom: " + carb.getCarburant().getNom() + " moyenne : " + carb.getMoyenne());
+		}
+		timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
+
+		System.out.println("Fin Test n°1 @ " + timeStamp);
 
 	}
 
